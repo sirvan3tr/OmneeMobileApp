@@ -29,6 +29,7 @@
     "react-dom": "^16.4.1",
     "react-native": "^0.54.0",
     "react-native-camera": "1.0.1",
+    "react-native-local-mongodb": "^2.2.2",
     "react-native-modal": "5.2.0",
     "react-native-permissions": "1.1.1",
     "react-native-qrcode-svg": "5.0.6",

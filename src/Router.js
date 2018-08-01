@@ -4,7 +4,7 @@ import { NavigationActions, StackNavigator } from 'react-navigation';
 import * as Views from './components/views';
 import { colors } from './common/styles';
 
-export const INITIAL_ROUTE = 'WalletsOverview';
+export const INITIAL_ROUTE = 'Register';
 
 const navigator = StackNavigator({
     ConfirmMnemonics: { screen: Views.ConfirmMnemonics },

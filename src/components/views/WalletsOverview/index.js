@@ -1,6 +1,16 @@
 import React from 'react';
 import autobind from 'autobind-decorator';
-import { ActivityIndicator, FlatList, Text, RefreshControl, StyleSheet, View, TextInput } from 'react-native';
+import {
+    AsyncStorage,
+    ActivityIndicator,
+    FlatList,
+    Text,
+    RefreshControl,
+    StyleSheet,
+    View,
+    Button,
+    TextInput
+} from 'react-native';
 import { inject, observer } from 'mobx-react';
 import { HeaderIcon } from '@components/widgets';
 import { colors, measures } from '@common/styles';
@@ -62,13 +72,17 @@ export class WalletsOverview extends React.Component {
     );
 
     render() {
+        var ws = new WebSocket("ws://10.0.2.2:5678/");
+        ws.onopen = function() {
+            console.log('Opened websocket');
+        };
         const { wallets } = this.props;
         return (
             <View style={styles.container}>
                 <TotalBalance wallets={wallets.list} />
                 {this.renderBody(wallets.list)}
                 <Text style={{fontWeight: 'bold'}}>
-                    I am bold
+                    I am bold wow
                     <Text style={{color: 'red'}}>
                     0x6fd8449df7a83c45a679003fc29f1ba2310a0bdc0171fd29b4b83487b4f97761
                     </Text>
