@@ -1,1 +1,14 @@
 http://localhost:8081/debugger-ui/
+
+if first time running on osx:
+chmod 755 android/gradlew
+
+adb problem on osx?
+brew cask install android-platform-tools
+
+jdk9 problems?
+PROJECT_PATH/android/gradle/wrapper/gradle-wrapper.properties
+distributionUrl=https\://services.gradle.org/distributions/gradle-4.3-rc-2-all.zip
+
+use jdk8
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_111.jdk/Contents/Home
