@@ -6,29 +6,68 @@ import {
   TextInput,
   Button,
   View,
-  AsyncStorage
+  AsyncStorage,
+  TouchableHighlight
 } from 'react-native';
-// Type 3: Persistent datastore with automatic loading
+import { Wallet as WalletUtils } from '@common/utils';
+import { Wallets as WalletsActions } from '@common/actions';
 
 export class Register extends Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-        myKey: null
+    constructor(props) {
+        super(props);
+        this.state = {
+            myKey: null,
+            pk: ''
+        }
     }
 
+    _storeData = async () => {
+        try {
+          await AsyncStorage.setItem('@MySuperStore:key', 'I like to save it.');
+        } catch (error) {
+          // Error saving data
+        }
+      }
 
+      _retrieveData = async () => {
 
+        let UID123_object = {
+            name: 'Chris',
+            age: 30,
+            traits: {hair: 'brown', eyes: 'brown'},
+          };
+          // You only need to define what will be added or updated
+          let UID123_delta = {
+            age: 31,
+            traits: {eyes: 'blue', shoe_size: 10},
+          };
+          
+          AsyncStorage.setItem('UID123', JSON.stringify(UID123_object), () => {
+            AsyncStorage.mergeItem('UID123', JSON.stringify(UID123_delta), () => {
+              AsyncStorage.getItem('UID123', (err, result) => {
+                console.log(result);
+              });
+            });
+          });
 
-  }
-
+        try {
+          const value = await AsyncStorage.getItem('TASKS');
+          if (value !== null) {
+            // We have data!!
+            console.log(value);
+            this.setState({value});
+          }
+         } catch (error) {
+           // Error retrieving data
+         }
+      }
   async getmong() {
       try {
         var Datastore = require('react-native-local-mongodb');
         var db = new Datastore({ filename: 'asyncStorageKey', autoload: true });
         // You can issue commands right away
-    
+
         //var doc = { hello: 'world', n : "wow wow" };
         //console.log(doc);
         var person = {
@@ -44,9 +83,10 @@ export class Register extends Component {
                 {
                     title : "old mobile number",
                     mobile : "07799006216"
-                }], 
+                }],
             address :
                 [{
+                    title: "Home",
                     homeNumber : "33C",
                     street : "Friars Place Lane",
                     town : "London",
@@ -70,8 +110,8 @@ export class Register extends Component {
         };
 
         console.log(person);
-        
-    
+
+
         db.find({ hello: 'world' }, function (err, docs) {
             // docs is an array containing documents Mars, Earth, Jupiter
             // If no document is found, docs is equal to []
@@ -81,89 +121,165 @@ export class Register extends Component {
 
       }
   }
-  async getKey() {
-    try {
-      const value = await AsyncStorage.getItem('@MySuperStore:key');
-      this.setState({myKey: value});
-    } catch (error) {
-      console.log("Error retrieving data" + error);
+
+    selectUserA() {
+        const pk = '0xb50c18d670e82f3f559142d63773b5f60882d337f7d40e78f87973484740ab0d',
+            walletName = 'User A Wallet',
+            walletDescription = 'Pre-defined user A wallet',
+            userA = {
+                firstname : "Sirvan",
+                surname : "Almasi",
+                dob : "26/01/1992",
+                placeOfBirth : "Saqqez",
+                tel :
+                    [{
+                        title : "Mobile main",
+                        mobile : "07799006216"
+                    },
+                    {
+                        title : "old mobile number",
+                        mobile : "07799006216"
+                    }],
+                address :
+                    [{
+                        homeNumber : "33C",
+                        street : "Friars Place Lane",
+                        town : "London",
+                        postcode : "W3 7AQ",
+                        country : "UK",
+                        beginDate : "",
+                        endDate : ""
+                    },{
+
+                    }],
+                email :
+                    [{
+                        title : "Personal one",
+                        email : "Sirvan3tr@gmail.com"
+                    },
+                    {
+                        title : "Warwick",
+                        email : "mim14sa@mail.wbs.ac.uk"
+                    }]
+            };
+        
+        // Store the user in the database
+        AsyncStorage.setItem('userA', JSON.stringify(userA), () => {
+            AsyncStorage.getItem('userA', (err, result) => {
+                console.log(result);
+            });
+        });
+
+        // save the pk into a wallet, will redirect to wallet overview too
+        this.onPressOpenWallet(pk, walletName, walletDescription);
     }
-  }
 
-  async saveKey(value) {
-    try {
-      await AsyncStorage.setItem('ss', value);
-      console.log(value);
-    } catch (error) {
-      console.log("Error saving data" + error);
+    async onPressOpenWallet(pk, walletName, walletDescription) {
+        try {
+            const wallet = WalletUtils.loadWalletFromPrivateKey(pk);
+            //const { walletName, walletDescription } = this.props.navigation.state.params;
+            await WalletsActions.addWallet(walletName, wallet, walletDescription);
+            this.props.navigation.navigate('WalletsOverview', { replaceRoute: true });
+            await WalletsActions.saveWallets();
+        } catch (e) {
+            console.warn(e);
+        }
     }
-  }
 
-  async resetKey() {
-    try {
-      await AsyncStorage.removeItem('@MySuperStore:key');
-      const value = await AsyncStorage.getItem('@MySuperStore:key');
-      this.setState({myKey: value});
-    } catch (error) {
-      console.log("Error resetting data" + error);
+    selectUserB() {
+        const pk = '0xb50c18d670e82f3f559142d63773b5f60882d337f7d40e78f87973484740ab1d',
+            walletName = 'User B Wallet',
+            walletDescription = 'Pre-defined user B wallet',
+            userB = {
+                firstname : "Robin",
+                surname : "Smith",
+                dob : "26/01/1992",
+                placeOfBirth : "London",
+                tel :
+                    [{
+                        title : "Mobile main",
+                        mobile : "07799006216"
+                    },
+                    {
+                        title : "old mobile number",
+                        mobile : "07799006216"
+                    }],
+                address :
+                    [{
+                        homeNumber : "33C",
+                        street : "Friars Place Lane",
+                        town : "London",
+                        postcode : "W3 7AQ",
+                        country : "UK",
+                        beginDate : "",
+                        endDate : ""
+                    },{
+
+                    }],
+                email :
+                    [{
+                        title : "Personal one",
+                        email : "robin@gmail.com"
+                    },
+                    {
+                        title : "Work",
+                        email : "robin@work.com"
+                    }]
+            };
+        
+        // Store the user in the database
+        AsyncStorage.setItem('userB', JSON.stringify(userB), () => {
+            AsyncStorage.getItem('userB', (err, result) => {
+                console.log(result);
+            });
+        });
+
+        // save the pk into a wallet, will redirect to wallet overview too
+        this.onPressOpenWallet(pk, walletName, walletDescription);
     }
-  }
 
-  render() {
-
-
-
-    return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to Demo AsyncStorage!
-        </Text>
-
-        <TextInput
-          style={styles.formInput}
-          placeholder="Enter key you want to save!"
-          value={this.state.myKey}
-          
-          />
-        <Button
-          style={styles.formButton}
-          onPress={this.getmong.bind(this)}
-          title="Save Key"
-          color="#2196f3"
-          accessibilityLabel="Save Key"
-        />
-        <Button
-          style={styles.formButton}
-          onPress={this.getKey.bind(this)}
-          title="Get Key"
-          color="#2196f3"
-          accessibilityLabel="Get Key"
-        />
-
-        <Button
-          style={styles.formButton}
-          onPress={this.resetKey.bind(this)}
-          title="Reset"
-          color="#f44336"
-          accessibilityLabel="Reset"
-        />
-
-        <Text style={styles.instructions}>
-          Stored key is = {this.state.myKey}
-        </Text>
-
-
-      </View>
-    );
-  }
+    render() {
+        this._storeData();
+        return (
+            <View style={styles.container}>
+            <Text style={styles.titleS}>Welcome to omnee!</Text>
+            <Text style={styles.welcome}>Select a pre-defined account:</Text>
+            <TouchableHighlight 
+                    style={styles.formButton}>
+                <Button onPress={this.selectUserA.bind(this)}            
+                    title="I want to be User A"
+                    accessibilityLabel="Learn more about this button"
+                /> 
+            </TouchableHighlight>
+            <TouchableHighlight 
+                    style={styles.formButton}>
+                <Button onPress={this.selectUserB.bind(this)}            
+                    title="I want to be User B"
+                    accessibilityLabel="Learn more about this button"
+                /> 
+            </TouchableHighlight> 
+            <Text style={styles.instructions}>
+                Stored key is = {this.state.myKey}
+            </Text>
+            </View>
+        );
+    }
 }
+
 
 const styles = StyleSheet.create({
   container: {
-    padding: 30,
     flex: 1,
-    alignItems: 'stretch',
-    backgroundColor: '#F5FCFF',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+  },
+  titleS: {
+    fontSize: 20,
+    textAlign: 'center',
+    color: '#000',
+    margin: 10,
   },
   welcome: {
     fontSize: 20,
@@ -177,8 +293,9 @@ const styles = StyleSheet.create({
     borderColor: "#555555",
   },
   formButton: {
-    borderWidth: 1,
-    borderColor: "#555555",
+    borderWidth: 0,
+    marginTop: 10,
+    padding: 10
   },
   instructions: {
     textAlign: 'center',

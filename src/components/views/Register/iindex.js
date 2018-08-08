@@ -43,3 +43,71 @@ var styles = StyleSheet.create({
         paddingRight:40,
     }
 });
+
+
+<TextInput
+style={styles.formInput}
+placeholder="Enter key you want to save!"
+value={this.state.myKey}
+/>
+<Button
+style={styles.formButton}
+onPress={this.getmong.bind(this)}
+title="Save Key"
+color="#2196f3"
+accessibilityLabel="Save Key"
+/>
+<Button
+style={styles.formButton}
+onPress={this.getKey.bind(this)}
+title="Get Key"
+color="#2196f3"
+accessibilityLabel="Get Key"
+/>
+
+<Button
+style={styles.formButton}
+onPress={this.resetKey.bind(this)}
+title="Reset"
+color="#f44336"
+accessibilityLabel="Reset"
+/>
+
+<Text style={styles.instructions}>
+Stored key is = {this.state.myKey}
+</Text>
+
+
+async getKey() {
+  try {
+    const value = await AsyncStorage.getItem('@MySuperStore:key');
+    this.setState({myKey: value});
+  } catch (error) {
+    console.log("Error retrieving data" + error);
+  }
+}
+
+async saveKey(value) {
+  try {
+    await AsyncStorage.setItem('ss', value);
+    console.log(value);
+  } catch (error) {
+    console.log("Error saving data" + error);
+  }
+}
+
+async resetKey() {
+  try {
+    await AsyncStorage.removeItem('@MySuperStore:key');
+    const value = await AsyncStorage.getItem('@MySuperStore:key');
+    this.setState({myKey: value});
+  } catch (error) {
+    console.log("Error resetting data" + error);
+  }
+}
+
+<TextInput
+style={styles.formInput}
+placeholder="Enter key you want to save!"
+value={this.state.myKey}
+/>

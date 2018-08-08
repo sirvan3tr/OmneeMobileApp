@@ -76,6 +76,9 @@ export class WalletsOverview extends React.Component {
         ws.onopen = function() {
             console.log('Opened websocket');
         };
+        AsyncStorage.getItem('userA', (err, result) => {
+            console.log(result);
+        });
         const { wallets } = this.props;
         return (
             <View style={styles.container}>
