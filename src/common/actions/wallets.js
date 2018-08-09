@@ -2,18 +2,19 @@ import { wallet as WalletStore, wallets as WalletsStore } from '@common/stores';
 import { Wallets as WalletsService, Api as ApiService } from '@common/services';
 import { Wallet as WalletUtils } from '@common/utils';
 
-export async function addWallet(walletName, wallet, walletDescription = '') {
+export async function addWallet(walletName,
+        wallet, walletDescription = '', almasFFS = '', type='', mod='', other='') {
     WalletsStore.isLoading(true);
-    WalletsStore.addWallet(walletName, wallet, walletDescription);
+    WalletsStore.addWallet(walletName, wallet, walletDescription, almasFFS, type, mod, other);
     WalletsStore.isLoading(false);
 }
 
 export async function loadWallets() {
     WalletsStore.isLoading(true);
     const pks = await WalletsService.loadWalletPKs();
-    pks.map(({ description, name, privateKey }) => {
+    pks.map(({ description, name, privateKey, almasFFS, type, mod, other }) => {
         const wallet = WalletUtils.loadWalletFromPrivateKey(privateKey);
-        WalletsStore.addWallet(name, wallet, description);
+        WalletsStore.addWallet(name, wallet, description, almasFFS, type, mod, other);
     });
     WalletsStore.isLoading(false);
 }

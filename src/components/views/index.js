@@ -15,3 +15,4 @@ export * from './WalletExtract';
 export * from './WalletSettings';
 export * from './WalletsOverview';
 export * from './Register';
+export * from './AlmasFFSProve';

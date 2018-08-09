@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         alignSelf: 'center',
         zIndex: 1,
-        width: 200,
+        width: 300,
         height: 200,
         borderWidth: 4,
         borderColor: 'green'

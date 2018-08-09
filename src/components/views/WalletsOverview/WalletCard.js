@@ -33,6 +33,8 @@ export default class WalletCard extends React.Component {
                     </View>
                     <View style={styles.middleColumn}>
                         <Text style={styles.title}>{wallet.name}</Text>
+                        <Text style={styles.title}>{wallet.type}</Text>
+                        <Text style={styles.title}>{wallet.mod}</Text>
                         <Text style={styles.description}>{wallet.description}</Text>
                     </View>
                     <View style={styles.rightColumn}>
@@ -55,7 +57,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingHorizontal: measures.defaultPadding,
         marginBottom: measures.defaultMargin,
-        height: 70
+        height: 90
     },
     leftColumn: {
         width: 40,

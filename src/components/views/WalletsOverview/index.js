@@ -72,10 +72,6 @@ export class WalletsOverview extends React.Component {
     );
 
     render() {
-        var ws = new WebSocket("ws://10.0.2.2:5678/");
-        ws.onopen = function() {
-            console.log('Opened websocket');
-        };
         AsyncStorage.getItem('userA', (err, result) => {
             console.log(result);
         });

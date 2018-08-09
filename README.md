@@ -1,4 +1,5 @@
-# Ethereum Wallet
+# Omnee mobile app
+Using the ethereum wallet (https://github.com/fmsouza/ethereum-wallet) as a template to begin with.
 
 This project is a Ethereum Wallet built on top of ReactNative.
 

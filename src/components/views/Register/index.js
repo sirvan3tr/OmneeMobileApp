@@ -123,7 +123,20 @@ export class Register extends Component {
   }
 
     selectUserA() {
+        /*
+        pk = ethereum private key
+
+        Fiat-Shamir CryptoSystem:
+            s = Fiat-Shamir Private Key
+            I = Identity string
+            j = random j indices for above id
+            n = global modulus
+        */
         const pk = '0xb50c18d670e82f3f559142d63773b5f60882d337f7d40e78f87973484740ab0d',
+            s = [1220448689, 386273255, 15269095, 79929288, 1066903174, 592861078, 278860438, 905288239, 536397697, 51542499],
+            I = 'Sirvan Almasi || 26/01/1992 || Saqqez || Sirvan3tr@gmail.com',
+            j = [879526612, 1864187998, 3119683462, 785478098, 1061096975, 2814024602, 972289411, 2683930126, 1899345369, 666184941],
+            n = 3328912597,
             walletName = 'User A Wallet',
             walletDescription = 'Pre-defined user A wallet',
             userA = {
@@ -171,15 +184,15 @@ export class Register extends Component {
         });
 
         // save the pk into a wallet, will redirect to wallet overview too
-        this.onPressOpenWallet(pk, walletName, walletDescription);
+        this.onPressOpenWallet(pk, walletName, walletDescription, s, 'both', n, j);
+        this.props.navigation.navigate('WalletsOverview', { replaceRoute: true });
     }
 
-    async onPressOpenWallet(pk, walletName, walletDescription) {
+    async onPressOpenWallet(pk, walletName, walletDescription, almasFFS, type, mod, other) {
         try {
             const wallet = WalletUtils.loadWalletFromPrivateKey(pk);
             //const { walletName, walletDescription } = this.props.navigation.state.params;
-            await WalletsActions.addWallet(walletName, wallet, walletDescription);
-            this.props.navigation.navigate('WalletsOverview', { replaceRoute: true });
+            await WalletsActions.addWallet(walletName, wallet, walletDescription, almasFFS, type, mod, other);
             await WalletsActions.saveWallets();
         } catch (e) {
             console.warn(e);

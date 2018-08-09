@@ -19,7 +19,9 @@ const navigator = StackNavigator({
     SelectDestination: { screen: Views.SelectDestination },
     WalletDetails: { screen: Views.WalletDetails },
     WalletsOverview: { screen: Views.WalletsOverview },
-    Register: { screen: Views.Register }
+    Register: { screen: Views.Register },
+    AlmasFFSProve : { screen: Views.AlmasFFSProve }
+
 }, {
     initialRouteName: INITIAL_ROUTE,
     navigationOptions: {
