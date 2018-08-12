@@ -122,8 +122,8 @@ ws.onmessage = function(event) {
             console.log('Fails: ' + rndStatus['fails'] + '/' + rndStatus['round']);
             authResult = [rndStatus['fails'] , rndStatus['round']];
             ws.close();
+            return authResult;
         }
     }
 }; // on msg
-return authResult;
 }// submitFunction

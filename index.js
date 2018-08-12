@@ -10,4 +10,4 @@ YellowBox.ignoreWarnings([
   'Remote debugger'
 ]);
 
-AppRegistry.registerComponent('EthereumWallet', () => App);
+AppRegistry.registerComponent('Omnee', () => App);

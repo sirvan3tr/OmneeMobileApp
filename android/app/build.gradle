@@ -98,7 +98,7 @@ android {
     buildToolsVersion "27.0.1"
 
     defaultConfig {
-        applicationId "com.ethereumwallet"
+        applicationId "com.omnee"
         minSdkVersion 19
         targetSdkVersion 27
         versionCode 1
