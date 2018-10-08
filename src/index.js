@@ -18,9 +18,9 @@ export default class Application extends React.Component {
         BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
     }
 
-    componentWillUnmount() {
-        BackHandler.removeEventListener('hardwareBackPress');
-    }
+    //componentWillUnmount() {
+    //    BackHandler.removeEventListener('hardwareBackPress');
+    //}
 
     @autobind
     handleBackButton() {

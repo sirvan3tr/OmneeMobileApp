@@ -1,13 +1,13 @@
 import React from 'react';
 import { StyleSheet, TouchableWithoutFeedback, Vibration, View } from 'react-native';
-import { RNCamera } from 'react-native-camera';
+import RNCamera from 'react-native-camera';
 import Modal from 'react-native-modal';
 import Permissions from 'react-native-permissions';
 import autobind from 'autobind-decorator';
 import { Icon } from '@components/widgets';
 import { colors } from '@common/styles';
 
-const { BarCodeType } = RNCamera.Constants;
+const BarCodeType = RNCamera.Constants;
 
 export class Camera extends React.Component {
 
@@ -37,18 +37,16 @@ export class Camera extends React.Component {
 
     @autobind
     onBarCodeRead({ type, data }) {
-        if (type === BarCodeType.qr) {
-            Vibration.vibrate();
-            this.hide();
-            this.props.onBarCodeRead(data);
-        }
+        //Vibration.vibrate();
+        this.hide();
+        this.props.onBarCodeRead(data);
     }
 
     renderView = (onClose) => (
         <View style={styles.container}>
             <RNCamera
                 style={styles.camera}
-                barCodeTypes={[BarCodeType.qr]}
+                aspect={RNCamera.constants.Aspect.fill}
                 onBarCodeRead={this.onBarCodeRead} />
             <TouchableWithoutFeedback onPress={onClose}>
                 <Icon name='close' color={colors.white} style={styles.closeIcon} />

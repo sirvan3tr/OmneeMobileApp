@@ -17,7 +17,7 @@ import almasFFSC from './ws';
 
 @inject('wallet')
 @observer
-export class AlmasFFSProve extends React.Component {
+export class QRCodeScanner extends React.Component {
     constructor(props) {
         super();
         this.state = {
@@ -62,9 +62,7 @@ export class AlmasFFSProve extends React.Component {
 
     render() {
         if (this.wsFunc.status == "Pass") {
-            alert("Successful Authentication!");
-        } else if(this.wsFunc.status == "Fail") {
-            alert("Unsuccessful Authentication :(");
+            alert("Successful Authentication!")
         }
         const { wallet: { item } } = this.props;
         return (

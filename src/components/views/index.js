@@ -16,3 +16,4 @@ export * from './WalletSettings';
 export * from './WalletsOverview';
 export * from './Register';
 export * from './AlmasFFSProve';
+export * from './QRCodeScanner';

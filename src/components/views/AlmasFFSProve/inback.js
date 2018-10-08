@@ -11,9 +11,7 @@ import QRCode from 'react-native-qrcode-svg';
 import Snackbar from 'react-native-snackbar';
 import { Icon, Camera, InputWithIcon } from '@components/widgets';
 import { colors, measures } from '@common/styles';
-import almasFFSC from './ws';
-
-
+import * as ws from './ws';
 
 @inject('wallet')
 @observer
@@ -24,7 +22,6 @@ export class AlmasFFSProve extends React.Component {
             'url' : null,
             'authResult' : '',
         };
-        this.wsFunc = new almasFFSC();
     }
 
     @autobind
@@ -48,7 +45,12 @@ export class AlmasFFSProve extends React.Component {
 
     @autobind
     initiateProof() {
-        this.wsFunc.almasFFSSubmit(this.state.url);
+        //[fails, rounds] = await ws.almasFFSSubmit(this.state.url);
+        //console.log(fails);
+        ws.almasFFSSubmit(this.state.url, function(result) {
+            this.setState({authResult: result[0] + '/' + result[1] });
+            console.log(result);
+        });
     }
 
     renderColumn = (icon, label, action) => (
@@ -61,11 +63,9 @@ export class AlmasFFSProve extends React.Component {
     );
 
     render() {
-        if (this.wsFunc.status == "Pass") {
-            alert("Successful Authentication!");
-        } else if(this.wsFunc.status == "Fail") {
-            alert("Unsuccessful Authentication :(");
-        }
+        //const wsret = ws.almasFFSSubmit();
+        console.log("wowowow" + this.state.authResult);
+        //alert("Hello");
         const { wallet: { item } } = this.props;
         return (
             <View style={styles.container}>
@@ -81,7 +81,6 @@ export class AlmasFFSProve extends React.Component {
                     title="Submit URL"
                     accessibilityLabel="Submit URL" /> 
             </TouchableHighlight>
-            <Text style={styles.centered}>{this.wsFunc.status}</Text>
             <Camera
                 ref='camera'
                 modal

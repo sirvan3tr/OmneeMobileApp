@@ -3,6 +3,7 @@ import {
   AppRegistry,
   StyleSheet,
   Text,
+  Image,
   TextInput,
   Button,
   View,
@@ -255,6 +256,7 @@ export class Register extends Component {
         this._storeData();
         return (
             <View style={styles.container}>
+            <Image source={require('./omnee_logo_blue.png')} />
             <Text style={styles.titleS}>Welcome to omnee!</Text>
             <Text style={styles.welcome}>Select a pre-defined account:</Text>
             <TouchableHighlight 
@@ -270,10 +272,7 @@ export class Register extends Component {
                     title="I want to be User B"
                     accessibilityLabel="Learn more about this button"
                 /> 
-            </TouchableHighlight> 
-            <Text style={styles.instructions}>
-                Stored key is = {this.state.myKey}
-            </Text>
+            </TouchableHighlight>
             </View>
         );
     }

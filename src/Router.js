@@ -20,8 +20,8 @@ const navigator = StackNavigator({
     WalletDetails: { screen: Views.WalletDetails },
     WalletsOverview: { screen: Views.WalletsOverview },
     Register: { screen: Views.Register },
-    AlmasFFSProve : { screen: Views.AlmasFFSProve }
-
+    AlmasFFSProve : { screen: Views.AlmasFFSProve },
+    QRCodeScanner : { screen: Views.QRCodeScanner }
 }, {
     initialRouteName: INITIAL_ROUTE,
     navigationOptions: {
