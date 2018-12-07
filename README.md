@@ -67,3 +67,18 @@ MIT
 ## Contribute
 
 TODO
+
+
+## Other
+
+Android install without dev server:
+react-native bundle --dev false --platform android --entry-file index.js --bundle-output ./android/app/build/intermediates/assets/debug/index.android.bundle --assets-dest ./android/app/build/intermediates/res/merged/debug
+
+
+Then to build the APK's after bundling:
+
+$ cd android
+#Create debug build:
+$ ./gradlew assembleDebug
+#Create release build:
+$ ./gradlew assembleRelease #Generated `apk` will be located at `android/app/build/outputs/apk`

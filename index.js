@@ -10,4 +10,4 @@ YellowBox.ignoreWarnings([
   'Remote debugger'
 ]);
 
-AppRegistry.registerComponent('Omnee', () => App);
+AppRegistry.registerComponent('Omnee', () => App);  

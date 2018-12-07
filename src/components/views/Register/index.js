@@ -256,8 +256,8 @@ export class Register extends Component {
         this._storeData();
         return (
             <View style={styles.container}>
-            <Image source={require('./omnee_logo_blue.png')} />
-            <Text style={styles.titleS}>Welcome to omnee!</Text>
+
+        <Text style={styles.titleS}>Welcome!</Text>
             <Text style={styles.welcome}>Select a pre-defined account:</Text>
             <TouchableHighlight 
                     style={styles.formButton}>
