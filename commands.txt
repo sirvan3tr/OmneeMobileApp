@@ -6,6 +6,9 @@ chmod 755 android/gradlew
 adb problem on osx?
 brew cask install android-platform-tools
 
+alsoo on windows adb is located at $$user\AppData\Local\Android\Sdk\platform-tools>
+if problems with android package adb reverse tcp:8081 tcp:8081
+
 jdk9 problems?
 PROJECT_PATH/android/gradle/wrapper/gradle-wrapper.properties
 distributionUrl=https\://services.gradle.org/distributions/gradle-4.3-rc-2-all.zip

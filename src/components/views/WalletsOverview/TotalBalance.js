@@ -28,9 +28,11 @@ export default class TotalBalance extends React.Component {
         //var providers = require('ethers').providers;
         // Connect to a local Parity instance
         //var provider = new providers.JsonRpcProvider('http://localhsot:8545', ethers.providers.networks.ropsten);
-        var provider = new ethers.providers.JsonRpcProvider('http://10.0.2.2:8545');
-        console.log(provider);
-        var address = '0x68dc3e7342acaf52ebe1356d2b211623dca9e022';
+
+        // From here is the real code -- 
+        //var provider = new ethers.providers.JsonRpcProvider('http://10.0.2.2:8545');
+        //console.log(provider);
+        //var address = '0x68dc3e7342acaf52ebe1356d2b211623dca9e022';
         var abi = [
             {
               "constant": true,
@@ -197,14 +199,14 @@ export default class TotalBalance extends React.Component {
  //var address = "0x68dc3e7342acaf52ebe1356d2b211623dca9e022";
  //var provider = ethers.providers.getDefaultProvider('mainnet');
 
- var contract = new ethers.Contract(address, abi, provider);
- var callPromise = contract.getInfo();
+    //var contract = new ethers.Contract(address, abi, provider);
+    //var callPromise = contract.getInfo();
 
-console.log(callPromise);
- callPromise.then(function(result) {
-    console.log("Result (property parameter; 0)", result);
-    // "Hello World"
-});
+    //console.log(callPromise);
+    //callPromise.then(function(result) {
+        //console.log("Result (property parameter; 0)", result);
+        // "Hello World"
+    //});
         
         return (
             <View style={styles.container}>

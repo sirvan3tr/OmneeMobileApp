@@ -80,12 +80,6 @@ export class WalletsOverview extends React.Component {
             <View style={styles.container}>
                 <TotalBalance wallets={wallets.list} />
                 {this.renderBody(wallets.list)}
-                <Text style={{fontWeight: 'bold'}}>
-                    I am bold wow
-                    <Text style={{color: 'red'}}>
-                    0x6fd8449df7a83c45a679003fc29f1ba2310a0bdc0171fd29b4b83487b4f97761
-                    </Text>
-                </Text>
             </View>
         );
     }
