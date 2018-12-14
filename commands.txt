@@ -7,7 +7,7 @@ adb problem on osx?
 brew cask install android-platform-tools
 
 alsoo on windows adb is located at $$user\AppData\Local\Android\Sdk\platform-tools>
-if problems with android package adb reverse tcp:8081 tcp:8081
+if problems with android package >> adb reverse tcp:8081 tcp:8081
 
 jdk9 problems?
 PROJECT_PATH/android/gradle/wrapper/gradle-wrapper.properties
