@@ -33,9 +33,6 @@ export default class WalletCard extends React.Component {
                     </View>
                     <View style={styles.middleColumn}>
                         <Text style={styles.title}>{wallet.name}</Text>
-                        <Text style={styles.title}>{wallet.type}</Text>
-                        <Text style={styles.title}>{wallet.mod}</Text>
-                        <Text style={styles.description}>{wallet.description}</Text>
                     </View>
                     <View style={styles.rightColumn}>
                         <View style={styles.balanceContainer}>

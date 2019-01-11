@@ -29,9 +29,13 @@ const styles = StyleSheet.create({
         alignItems: 'stretch',
         justifyContent: 'space-around',
         flexDirection: 'row',
-        height: 48,
+        height: 60,
         borderTopWidth: 1,
-        borderColor: colors.gray,
-        backgroundColor: colors.lightestGray
+        borderColor: colors.white,
+        backgroundColor: colors.white,
+        shadowOpacity: 1,
+        shadowRadius: 20,
+        shadowColor: colors.grey,
+        shadowOffset: { height: 0, width: 0 },
     }
 });

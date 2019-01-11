@@ -29,9 +29,9 @@ export class Register extends Component {
         } catch (error) {
           // Error saving data
         }
-      }
+    }
 
-      _retrieveData = async () => {
+    _retrieveData = async () => {
 
         let UID123_object = {
             name: 'Chris',
@@ -62,8 +62,9 @@ export class Register extends Component {
          } catch (error) {
            // Error retrieving data
          }
-      }
-  async getmong() {
+    }
+
+    async getmong() {
       try {
         var Datastore = require('react-native-local-mongodb');
         var db = new Datastore({ filename: 'asyncStorageKey', autoload: true });
@@ -121,7 +122,7 @@ export class Register extends Component {
       } catch (error) {
 
       }
-  }
+    }
 
     selectUserA() {
         /*
@@ -186,7 +187,14 @@ export class Register extends Component {
 
         // save the pk into a wallet, will redirect to wallet overview too
         this.onPressOpenWallet(pk, walletName, walletDescription, s, 'both', n, j);
-        this.props.navigation.navigate('WalletsOverview', { replaceRoute: true });
+
+        // select the wallet and navigat to the detailed page of the wallet
+        const wallet = WalletUtils.loadWalletFromPrivateKey(pk);
+        WalletsActions.selectWallet(wallet);
+        this.props.navigation.navigate('WalletDetails', { wallet, replaceRoute: true });
+
+        // or we can go to the wallets overview page
+        //this.props.navigation.navigate('WalletsOverview', { replaceRoute: true });
     }
 
     async onPressOpenWallet(pk, walletName, walletDescription, almasFFS, type, mod, other) {
