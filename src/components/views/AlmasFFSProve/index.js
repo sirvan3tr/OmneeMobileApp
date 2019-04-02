@@ -48,7 +48,44 @@ export class AlmasFFSProve extends React.Component {
 
     @autobind
     initiateProof() {
-        this.wsFunc.almasFFSSubmit(this.state.url);
+        
+        // Initiat ethe fiat shamir system
+        //this.wsFunc.almasFFSSubmit(this.state.url);
+
+        // initiate a normal ethereum key sig
+        this.ethSign();
+    }
+
+    async ethSign() {
+        // Sign the string message
+        var data = JSON.parse(this.state.url),
+            url = data['url'],
+            uID  = data['uID'];
+
+        var ws = new WebSocket(url);
+
+        var deeID = '0xa78e5bb6ff6a849e120985d32532e5067f262e19'
+        
+        // Add timestamp and other measures to
+        // counter replay and other attacks
+        msg = uID + deeID
+
+        const { item } = this.props.wallet;
+
+        let flatSig = await item.signMessage(msg);
+
+        ws.onopen = () => {
+            var payload = JSON.stringify({
+                'type': 'loginSig',
+                'host': uID,
+                'omneeID': deeID,
+                'msg': msg,
+                'signature' : flatSig
+            });
+
+            ws.send(payload);
+        }
+        
     }
 
     renderColumn = (icon, label, action) => (

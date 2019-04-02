@@ -62,6 +62,11 @@ export default class almasFFSC extends React.Component {
         var ws = new WebSocket(url);
         var authResult = [];
         console.log(ws);
+
+        /*
+        THIS MUST BE PULLED IN FROM THE LOCAL DEVICE RATHER THAN HARDCODED HERE
+        CHANGE ASAP
+        */
         var v = [2333866390, 91504984, 24182319, 2679948747, 2426252266, 1543844700, 2667701433, 437491298, 2039680765, 153121206],
             s = [1220448689, 386273255, 15269095, 79929288, 1066903174, 592861078, 278860438, 905288239, 536397697, 51542499],
             I = 'Sirvan Almasi || 26/01/1992 || Saqqez || Sirvan3tr@gmail.com',
