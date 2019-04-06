@@ -57,8 +57,8 @@ export default class almasFFSC extends React.Component {
     */
     almasFFSSubmit = (data) => {
         data = JSON.parse(data);
-        url = data['url'];
-        forID  = data['id'];
+        url = data['wsURL'];
+        forID  = data['uID'];
         var ws = new WebSocket(url);
         var authResult = [];
         console.log(ws);

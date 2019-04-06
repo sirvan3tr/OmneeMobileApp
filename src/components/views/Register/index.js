@@ -146,6 +146,7 @@ export class Register extends Component {
                 surname : "Almasi",
                 dob : "26/01/1992",
                 placeOfBirth : "Saqqez",
+                deeID : '0xa78e5bb6ff6a849e120985d32532e5067f262e19',
                 tel :
                     [{
                         title : "Mobile main",

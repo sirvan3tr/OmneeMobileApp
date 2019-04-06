@@ -1,5 +1,6 @@
 import React from 'react';
 import { Clipboard,
+    Modal,
     TouchableHighlight,
     TextInput,
     Share,
@@ -15,6 +16,7 @@ import almasFFSC from './ws';
 
 
 
+
 @inject('wallet')
 @observer
 export class AlmasFFSProve extends React.Component {
@@ -23,6 +25,8 @@ export class AlmasFFSProve extends React.Component {
         this.state = {
             'url' : null,
             'authResult' : '',
+            modalVisible: false,
+            modalContent: ''
         };
         this.wsFunc = new almasFFSC();
     }
@@ -48,43 +52,56 @@ export class AlmasFFSProve extends React.Component {
 
     @autobind
     initiateProof() {
-        
-        // Initiat ethe fiat shamir system
-        //this.wsFunc.almasFFSSubmit(this.state.url);
+        var data = JSON.parse(this.state.url),
+            type = data['type'];
 
-        // initiate a normal ethereum key sig
-        this.ethSign();
+        console.log(type);
+        if (type == 'almasFFSRegister') {
+            this.wsFunc.almasFFSSubmit(this.state.url);
+        }else if(type == 'loginSig') {
+            this.setState({modalContent: 'site y wants to authenticate your account, would you like to sign in?'});
+            this.setState({modalVisible: true});
+        } else {
+            Alert('Unknown message');
+        }
     }
 
     async ethSign() {
-        // Sign the string message
-        var data = JSON.parse(this.state.url),
-            url = data['url'],
-            uID  = data['uID'];
+        // Retrieve data from state stores
+        var event = JSON.parse(this.state.url),
+            wsURL = event['wsURL'],
+            uID  = event['uID'],
+            expirytime = event['expirytime'],
+            data = event['data'];
+            
 
-        var ws = new WebSocket(url);
+        console.log('ethSign is active');
+        console.log(uID.length);
+        // Serialisation
+       // if (uID.length == 36) {
+            // Open new websocket
+            var ws = new WebSocket(wsURL);
+            var deeID = '0xa78e5bb6ff6a849e120985d32532e5067f262e19';
+            const msg = uID + deeID + expirytime + data;
+            const { item } = this.props.wallet;
+            let flatSig = await item.signMessage(msg);
 
-        var deeID = '0xa78e5bb6ff6a849e120985d32532e5067f262e19'
-        
-        // Add timestamp and other measures to
-        // counter replay and other attacks
-        msg = uID + deeID
+            ws.onopen = () => {
+                var payload = JSON.stringify({
+                    'type': 'loginSig',
+                    'uID': uID,
+                    'deeID': deeID,
+                    'expirytime': '',
+                    'data': event['data'],
+                    'msg': msg,
+                    'signature' : flatSig
+                });
 
-        const { item } = this.props.wallet;
-
-        let flatSig = await item.signMessage(msg);
-
-        ws.onopen = () => {
-            var payload = JSON.stringify({
-                'type': 'loginSig',
-                'host': uID,
-                'omneeID': deeID,
-                'msg': msg,
-                'signature' : flatSig
-            });
-
-            ws.send(payload);
-        }
+                ws.send(payload);
+            };
+            this.setState({modalVisible: false});
+            alert('Message sent!');
+        //} //- if
         
     }
 
@@ -97,6 +114,10 @@ export class AlmasFFSProve extends React.Component {
         </TouchableWithoutFeedback>
     );
 
+    setModalVisible(visible) {
+        this.setState({modalVisible: visible});
+    }
+
     render() {
         if (this.wsFunc.status == "Pass") {
             alert("Successful Authentication!");
@@ -106,6 +127,37 @@ export class AlmasFFSProve extends React.Component {
         const { wallet: { item } } = this.props;
         return (
             <View style={styles.container}>
+
+                    <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={this.state.modalVisible}
+                    onRequestClose={() => {
+                        Alert.alert('Modal has been closed.');
+                    }}>
+                    <View style={styles.accessmodal}>
+                        <View style={styles.modalContents}>
+                            <Text>{this.state.modalContent}</Text>
+                            <TouchableHighlight>
+                            <Button
+                                onPress={() => {
+                                this.ethSign();
+                                }}
+                                title="Allow"
+                                accessibilityLabel="Allow" />
+                            </TouchableHighlight>
+                            <TouchableHighlight>
+                            <Button
+                                onPress={() => {
+                                this.setModalVisible(false);
+                                }}
+                                title="Don't Allow"
+                                accessibilityLabel="Don't Allow" />
+                            </TouchableHighlight>
+                        </View>
+                    </View>
+                    </Modal>
+
             <Text style={styles.centered}>Enter or scan the request url:</Text>
             <InputWithIcon
                 ref='input'
@@ -139,6 +191,19 @@ export class AlmasFFSProve extends React.Component {
 }
 
 const styles = StyleSheet.create({
+    accessmodal: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 20,
+        backgroundColor:'rgba(0,0,0,0.7)'
+    },
+    modalContents: {
+        flex: 1,
+        padding:20,
+        backgroundColor: colors.white,
+    },
     container: {
         backgroundColor: colors.white,
         flex: 1,
