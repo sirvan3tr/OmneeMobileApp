@@ -3,7 +3,9 @@ import { Clipboard,
     Modal,
     TouchableHighlight,
     TextInput,
+    Image,
     Share,
+    Dimensions,
     Button,
     StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native';
 import { inject, observer } from 'mobx-react';
@@ -118,6 +120,12 @@ export class AlmasFFSProve extends React.Component {
         this.setState({modalVisible: visible});
     }
 
+    async onBarCodeReadFx(data) {
+        console.log(data);
+        this.setState({ url: data });
+        this.initiateProof();
+    }
+
     render() {
         if (this.wsFunc.status == "Pass") {
             alert("Successful Authentication!");
@@ -128,56 +136,48 @@ export class AlmasFFSProve extends React.Component {
         return (
             <View style={styles.container}>
 
-                    <Modal
-                    animationType="slide"
-                    transparent={true}
-                    visible={this.state.modalVisible}
-                    onRequestClose={() => {
-                        Alert.alert('Modal has been closed.');
-                    }}>
-                    <View style={styles.accessmodal}>
-                        <View style={styles.modalContents}>
-                            <Text>{this.state.modalContent}</Text>
-                            <TouchableHighlight>
-                            <Button
-                                onPress={() => {
-                                this.ethSign();
-                                }}
-                                title="Allow"
-                                accessibilityLabel="Allow" />
-                            </TouchableHighlight>
-                            <TouchableHighlight>
-                            <Button
-                                onPress={() => {
-                                this.setModalVisible(false);
-                                }}
-                                title="Don't Allow"
-                                accessibilityLabel="Don't Allow" />
-                            </TouchableHighlight>
-                        </View>
+                <Modal
+                animationType="slide"
+                transparent={true}
+                visible={this.state.modalVisible}
+                onRequestClose={() => {
+                    Alert.alert('Modal has been closed.');
+                }}>
+                <View style={styles.accessmodal}>
+                    <View style={styles.modalContents}>
+                        <Text>{this.state.modalContent}</Text>
+                        <TouchableHighlight>
+                        <Button
+                            onPress={() => {
+                            this.ethSign();
+                            }}
+                            title="Allow"
+                            accessibilityLabel="Allow" />
+                        </TouchableHighlight>
+                        <TouchableHighlight>
+                        <Button
+                            onPress={() => {
+                            this.setModalVisible(false);
+                            }}
+                            title="Don't Allow"
+                            accessibilityLabel="Don't Allow" />
+                        </TouchableHighlight>
                     </View>
-                    </Modal>
-
-            <Text style={styles.centered}>Enter or scan the request url:</Text>
-            <InputWithIcon
-                ref='input'
-                icon='qr-scanner'
-                placeholder='eg.: https://omnee.me/almasFFS'
-                onChangeText={url => this.setState({ url })}
-                onPressIcon={() => this.refs.camera.show()} />
-            <TouchableHighlight>
-                <Button onPress={this.initiateProof}            
-                    title="Submit URL"
-                    accessibilityLabel="Submit URL" /> 
+                </View>
+                </Modal>
+            <View style={styles.qrButton}>
+            <TouchableHighlight onPress={() => this.refs.camera.show()}>
+                <Image
+                    source={require('../../media/img/qr_button.png')}
+                />
             </TouchableHighlight>
+            </View>
             <Text style={styles.centered}>{this.wsFunc.status}</Text>
             <Camera
                 ref='camera'
                 modal
                 onClose={() => this.refs.camera.hide()}
-                onBarCodeRead={data => this.refs.input.onChangeText(data)}/>
-            <Text style={styles.centered}>{this.state.authResult}</Text>
-                <Text style={styles.centered}>This is the Fiat-Shamir Cryptosystem, your identity such as name, place of birth and date of birth represent a sort of public key. Therefore, an automatic method of authentication.</Text>
+                onBarCodeRead={data => this.onBarCodeReadFx(data)}/>
                 <Text style={styles.centered}>{item.getAddress()}</Text>
                 <View style={styles.actions}>
                     <View style={styles.actionsBar}>
@@ -191,6 +191,14 @@ export class AlmasFFSProve extends React.Component {
 }
 
 const styles = StyleSheet.create({
+    qrButton: {
+        position: 'absolute',
+        width: 50,
+        height: 50,
+        bottom: 20,
+        left: Dimensions.get('window').width - 70,
+        zIndex: 100,
+    },
     accessmodal: {
         flex: 1,
         flexDirection: 'row',
@@ -202,10 +210,8 @@ const styles = StyleSheet.create({
     modalContents: {
         flex: 1,
         padding:20,
-        backgroundColor: colors.white,
     },
     container: {
-        backgroundColor: colors.white,
         flex: 1,
         alignItems: 'stretch',
         justifyContent: 'space-around',

@@ -19,6 +19,6 @@ export class WalletDetails extends React.Component {
     ];
 
     render() {
-        return <TabView tabs={this.tabs} />;
+        return <TabView tabs={this.tabs} />
     }
 }
