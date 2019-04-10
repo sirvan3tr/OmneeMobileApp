@@ -20,3 +20,9 @@ use jdk8
 export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_152.jdk/Contents/Home
 
 ifconfig | grep "inet " | grep -v 127.0.0.1
+
+
+How to accept the SDK user license agreement:
+ON OSX:
+~/Library/Android/sdk/tools/bin
+./sdkmanager --licenses

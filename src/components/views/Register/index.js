@@ -133,6 +133,8 @@ export class Register extends Component {
             I = Identity string
             j = random j indices for above id
             n = global modulus
+
+            public key: 0x6751c5563A62675Ffba7D3220f883c719b7B9F49
         */
         const pk = '0xb50c18d670e82f3f559142d63773b5f60882d337f7d40e78f87973484740ab0d',
             s = [1220448689, 386273255, 15269095, 79929288, 1066903174, 592861078, 278860438, 905288239, 536397697, 51542499],
