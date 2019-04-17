@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-    StyleSheet, View, Dimensions, Image, Text,
+    StyleSheet, View, Dimensions, Image, Text, AsyncStorage,
     Animated, Platform, TouchableOpacity, ScrollView, FlatList
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
@@ -10,7 +10,16 @@ const Screen = {
     height: Dimensions.get('window').height
 }
 export default class UserHeader extends Component{
+    constructor(props) {
+        super(props);
+        this.state = {
+            'userDetails' : 'tt'
+        };
+    }
     render() {
+        AsyncStorage.getItem('userA', (err, result) => {
+            this.setState({userDetails: JSON.parse(result) });
+        });
         return (
             <View style={styles.cart_layout}>
                 <LinearGradient colors={['#2278b3', '#697baf', '#e9969f']} style={styles.linearGradient}>
@@ -36,7 +45,7 @@ export default class UserHeader extends Component{
                             />
                             </View>
                         </View>
-                        <Text style={{ color: '#fff', fontSize: 25, marginLeft: 70, }}>Hello [...]!</Text>
+                        <Text style={{ color: '#fff', fontSize: 25, marginLeft: 70, }}>Hello {this.state.userDetails['firstname']} </Text>
                     </View>
                 </View>
                 </LinearGradient>

@@ -18,4 +18,6 @@ export * from './Register';
 export * from './AlmasFFSProve';
 export * from './QRCodeScanner';
 export * from './WalletHome';
+export * from './PasswordManager';
+
 

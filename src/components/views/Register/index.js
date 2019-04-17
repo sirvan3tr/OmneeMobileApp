@@ -15,12 +15,14 @@ import { Wallets as WalletsActions } from '@common/actions';
 
 export class Register extends Component {
 
+    static navigationOptions = { title: 'deeID - Select an Account' };
+
     constructor(props) {
         super(props);
         this.state = {
             myKey: null,
             pk: ''
-        }
+        };
     }
 
     _storeData = async () => {
@@ -125,6 +127,35 @@ export class Register extends Component {
     }
 
     selectUserA() {
+
+        const newPass = [
+            {
+                url: 'http://google.com',
+                name: 'My Gmail account',
+                username: 'sirvan3tr',
+                password: 'cant tell you',
+                notes: 'nothing to note',
+                timestamp: Date.now()
+            },
+            {
+                url: 'http://google.com',
+                name: 'My Gmail account',
+                username: 'sirvan3tr',
+                password: 'cant tell you',
+                notes: 'nothing to note',
+                timestamp: Date.now()
+            },
+            {
+                url: 'http://google.com',
+                name: 'My Gmail account',
+                username: 'sirvan3tr',
+                password: 'cant tell you',
+                notes: 'nothing to note',
+                timestamp: Date.now()
+            }
+        ];
+        
+        AsyncStorage.setItem('passwords', JSON.stringify(newPass), () => { });
         /*
         pk = ethereum private key
 

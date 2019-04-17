@@ -2,6 +2,7 @@ import React from 'react';
 import { Clipboard,
     Modal,
     TouchableHighlight,
+    TouchableOpacity,
     TextInput,
     Image,
     Share,
@@ -166,11 +167,11 @@ export class AlmasFFSProve extends React.Component {
                 </View>
                 </Modal>
             <View style={styles.qrButton}>
-            <TouchableHighlight onPress={() => this.refs.camera.show()}>
+            <TouchableOpacity onPress={() => this.refs.camera.show()}>
                 <Image
                     source={require('../../media/img/qr_button.png')}
                 />
-            </TouchableHighlight>
+            </TouchableOpacity>
             </View>
             <Text style={styles.centered}>{this.wsFunc.status}</Text>
             <Camera
@@ -178,7 +179,6 @@ export class AlmasFFSProve extends React.Component {
                 modal
                 onClose={() => this.refs.camera.hide()}
                 onBarCodeRead={data => this.onBarCodeReadFx(data)}/>
-                <Text style={styles.centered}>{item.getAddress()}</Text>
                 <View style={styles.actions}>
                     <View style={styles.actionsBar}>
                         {this.renderColumn('copy', 'Copy', this.copyToClipboard)}

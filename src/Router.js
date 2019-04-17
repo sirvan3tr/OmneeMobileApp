@@ -22,12 +22,20 @@ const navigator = StackNavigator({
     Register: { screen: Views.Register },
     AlmasFFSProve : { screen: Views.AlmasFFSProve },
     QRCodeScanner : { screen: Views.QRCodeScanner },
-    WalletHome : { screen: Views.WalletHome }
+    WalletHome : { screen: Views.WalletHome },
+    PasswordManager : { screen: Views.PasswordManager }
 }, {
     initialRouteName: INITIAL_ROUTE,
     navigationOptions: {
         headerStyle: {
             backgroundColor: colors.primary,
+        },
+        headerTitleStyle: {
+            fontWeight: "bold",
+            color: "#fff",
+            zIndex: 1,
+            fontSize: 18,
+            lineHeight: 23
         },
         headerTintColor: colors.secondary,
         tintColor: colors.secondary

@@ -30,22 +30,27 @@ const styles = StyleSheet.create({
     cover: {
         width: imageWidth,
         height: imageHeight
+    },
+    qrButton: {
+        marginTop: 250
     }
 });
 
 export class WalletHome extends Component {
-
+    
+    static navigationOptions = { title: 'Load Wallet' };
+    
     render() {
 
         return (
-<View>
-<View>
-    <UserHeader />
-</View>
-<ScrollView style={{marginTop:50, height:200}}>
-    <AlmasFFSProve />
-</ScrollView>
-</View>
+            <View>
+            <View>
+                <UserHeader />
+            </View>
+            <View style={styles.qrButton}>
+                <AlmasFFSProve />
+            </View>
+            </View>
         )
     }
     renderSeparator = () => {
@@ -59,7 +64,4 @@ export class WalletHome extends Component {
             />
         );
     };
-
-
-
 }

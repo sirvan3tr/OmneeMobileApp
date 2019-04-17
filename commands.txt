@@ -26,3 +26,6 @@ How to accept the SDK user license agreement:
 ON OSX:
 ~/Library/Android/sdk/tools/bin
 ./sdkmanager --licenses
+
+
+<Text style={styles.centered}>{item.getAddress()}</Text>

@@ -61,7 +61,6 @@ export default class almasFFSC extends React.Component {
         forID  = data['uID'];
         var ws = new WebSocket(url);
         var authResult = [];
-        console.log(ws);
 
         /*
         THIS MUST BE PULLED IN FROM THE LOCAL DEVICE RATHER THAN HARDCODED HERE
