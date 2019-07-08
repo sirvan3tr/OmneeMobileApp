@@ -17,7 +17,10 @@ PROJECT_PATH/android/gradle/wrapper/gradle-wrapper.properties
 distributionUrl=https\://services.gradle.org/distributions/gradle-4.3-rc-2-all.zip
 
 use jdk8
+
 export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_152.jdk/Contents/Home
+Use "set" on windows instead of export
+
 
 ifconfig | grep "inet " | grep -v 127.0.0.1
 

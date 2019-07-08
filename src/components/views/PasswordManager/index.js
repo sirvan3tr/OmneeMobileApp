@@ -6,7 +6,7 @@ import autobind from 'autobind-decorator';
 
 import Row from './Row';
 import { set } from 'sinon/lib/sinon/match';
-import console = require('console');
+//import console = require('console');
 
 export class PasswordManager extends React.Component {
     
