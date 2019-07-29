@@ -6,6 +6,10 @@ export default class almasFFSC extends React.Component {
     @observable isLoading = true;
     @observable status = 'not set';
 
+    // stop it from re-sending same step
+    @observable stepCheck = -1;
+
+
     constructor() {
         super();
     }
@@ -43,13 +47,18 @@ export default class almasFFSC extends React.Component {
     
     // Generate a unique r and calculate x from it
     @autobind
-    genX(n, forID, rnd = 1){
+    genX(n, forID, rnd = 1) {
         var r = Math.floor(Math.random() * n),
             rs = r.toString(),
             r2 = this.mult(rs,rs),
             x = this.modulo(r2.toString(), n),
             xJSON = JSON.stringify({'type' : 'almasFFSMobile', 'forID': forID, 'round' : rnd, 'step' : 1, 'data' : x });
         return [r, x, xJSON];
+    }
+
+    // Check whether if we should be sending data
+    sendCheck = (data, ws) => {
+        ws.send(data);
     }
     
     /*
@@ -59,8 +68,10 @@ export default class almasFFSC extends React.Component {
         data = JSON.parse(data);
         url = data['wsURL'];
         forID  = data['uID'];
+        this.isLoading = true;
+        this.status = 'not set';
+        this.stepCheck = -1;
         var ws = new WebSocket(url);
-        var authResult = [];
 
         /*
         THIS MUST BE PULLED IN FROM THE LOCAL DEVICE RATHER THAN HARDCODED HERE
@@ -80,14 +91,20 @@ export default class almasFFSC extends React.Component {
         
         ws.onopen = () => {
             console.log('Opened websocket');
+
             // Step 0: Initiate Proof with WebServer
-            var inj = {'I': I, 'j' : j, 'n' : n};
-            var innit = JSON.stringify({'type' : 'almasFFSMobile', 'forID': forID, 'round' : 1, 'step' : 0, 'data' : inj});
-            ws.send(innit);
-        }; // on open
+            if(this.stepCheck < 0) {
+                let inj = {'I': I, 'j' : j, 'n' : n},
+                    innit = JSON.stringify({'type' : 'almasFFSMobile', 'forID': forID, 'round' : 1, 'step' : 0, 'data' : inj});
+                this.stepCheck = 0
+                this.sendCheck(innit, ws);
+            }
+        };
         
         ws.onmessage = (event) => {
-            var dataJSON = JSON.parse(event.data);
+            let dataJSON = JSON.parse(event.data);
+            this.shouldSend = true;
+
             if (dataJSON['round'] != rndStatus['round'] && rndStatus['status'] == true) {
                 // We have a new round
                 newRound = true;
@@ -96,48 +113,57 @@ export default class almasFFSC extends React.Component {
             } else {
                 newRound = false;
             }
-        
-            // Step 1: random r
-            if (dataJSON['step'] == 1) {
+            /* ===================================
+            Step 1: random r
+            =================================== */
+            if (dataJSON['step'] == 1 && ( this.stepCheck < 1 || this.stepCheck > 4)) {
                 // Get num of rounds
                 rnds = dataJSON['rnds'];
                 // Begin
                 console.log('Round: ' + rndStatus['round']);
                 [r, x, xJSON] = this.genX(n, forID, rndStatus['round']);
                 console.log('x: ' + x);
-                ws.send(xJSON);
-        
-            // Step 2: Server sends random bit vector
-            } else if (dataJSON['step'] == 2) {
+                this.stepCheck = 1;
+                this.sendCheck(xJSON, ws);
+
+            /* ===================================
+            Step 2: Server sends random bit vector
+            =================================== */
+            } else if (dataJSON['step'] == 2 && this.stepCheck < 2) {
                 e = dataJSON['data'];
                 console.log('e: ' + e)
-            // Step 3: Send y
-                var y = r;
-                for(var i=0; i < s.length; i++) {
+            /* ===================================
+            Step 3: Send y
+            =================================== */
+                let y = r;
+                for(let i=0; i < s.length; i++) {
                     if (e[i]==1) {
-                        var ys = y.toString();
-                        var ss = s[i].toString();
+                        let ys = y.toString();
+                        let ss = s[i].toString();
                         y = this.mult(ys, ss);
                     }
                 }
                 y = this.modulo(y.toString(),n);
                 console.log('y: ' + y)            
-                var yJSON = JSON.stringify({'type' : 'almasFFSMobile', 'forID': forID, 'round' : rnds, 'step' : 3, 'data' : y});
-                ws.send(yJSON);
-            // Step 4: Server Verify
-            } else if(dataJSON['step'] == 4) {
+                let yJSON = JSON.stringify({'type' : 'almasFFSMobile', 'forID': forID, 'round' : data['round'], 'step' : 3, 'data' : y});
+                this.stepCheck = 2; // Skipping step 3 implementation
+                this.sendCheck(yJSON, ws);
+            /* ===================================
+            Step 4: Get confirmation
+            =================================== */
+            } else if(dataJSON['step'] == 4 && this.stepCheck < 4) {
                 if (dataJSON['data']=='Fail') rndStatus['fails'] += 1;
                 console.log('Result: ' + dataJSON['data']);
                 // Begin again
                 if (rndStatus['round'] < rnds) {
-                    var innit = JSON.stringify({'type' : 'almasFFSMobile', 'forID': forID, 
+                    let innit = JSON.stringify({'type' : 'almasFFSMobile', 'forID': forID, 
                         'round' : rndStatus['round']+1, 'step' : 0, 'data' : ''});
-                    ws.send(innit);
+                    this.sendCheck(innit, ws);
                     rndStatus['round'] +=1;
                 } else {
                     console.log('The End');
                     console.log('Fails: ' + rndStatus['fails'] + '/' + rndStatus['round']);
-                    //authResult = [rndStatus['fails'] , rndStatus['round']];
+
                     ws.close();
                     if (rndStatus['fails'] > 0) {
                         this.status = "Fail";
@@ -145,6 +171,9 @@ export default class almasFFSC extends React.Component {
                         this.status = "Pass";
                     }
                 }
+                this.stepCheck = 5;
+            } else {
+                console.log('Error');
             }
         }; // on msg
     }// submitFunction
