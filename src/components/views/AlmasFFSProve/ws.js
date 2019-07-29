@@ -122,7 +122,7 @@ export default class almasFFSC extends React.Component {
                 }
                 y = this.modulo(y.toString(),n);
                 console.log('y: ' + y)            
-                var yJSON = JSON.stringify({'type' : 'almasFFSMobile', 'forID': forID, 'round' : 'rnds', 'step' : 3, 'data' : y});
+                var yJSON = JSON.stringify({'type' : 'almasFFSMobile', 'forID': forID, 'round' : rnds, 'step' : 3, 'data' : y});
                 ws.send(yJSON);
             // Step 4: Server Verify
             } else if(dataJSON['step'] == 4) {
